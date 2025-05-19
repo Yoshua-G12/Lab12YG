@@ -1,0 +1,302 @@
+﻿@page "/"
+
+@using Models
+@using Componentes
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+@inject NavigationManager NavigationManager
+
+<h1>Formulario para nuevos Productos</h1>
+
+<!-- ComboBox para seleccionar tipo de producto -->
+<div class="row mt-3">
+    <div class="col col-6">
+        <label for="tipoProducto">Tipo de Producto: </label>
+        <InputSelect id="tipoProducto" class="form-select" @bind-Value="tipoSeleccionado">
+            <option value="Alimento">Alimento</option>
+            <option value="Libro">Libro</option>
+            <option value="Electronico">Electrónico</option>
+        </InputSelect>
+    </div>
+</div>
+
+<!-- FORMULARIO ALIMENTO -->
+@if (tipoSeleccionado == "Alimento")
+{
+    alimento.Tipo = tipoSeleccionado;
+    
+    <EditForm Model="@alimento" OnValidSubmit="@GuardarAlimento">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        
+        <div class="container">
+            <div class="row mt-3">
+                <div class="col col-2">
+                    <label for="id" class="form-label">Código: </label>
+                    <InputText id="identifier" class="form-control" @bind-Value="alimento.Id" />
+                    <ValidationMessage For="() => alimento.Id" />
+                </div>
+                <div class="col col-4">
+                    <label for="nombre" class="form-label">Nombre: </label>
+                    <InputText id="nombre" class="form-control" @bind-Value="alimento.Nombre" />
+                    <ValidationMessage For="() => alimento.Nombre" />
+                </div>
+                <div class="col col-6">
+                    <label for="descripcion">Descripción: </label>
+                    <InputTextArea id="descripcion" class="form-control" @bind-Value="alimento.Descripcion" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <label for="precio">Precio de Compra: </label>
+                    <InputNumber id="precio" class="form-control" @bind-Value="alimento.Precio" />
+                    <ValidationMessage For="() => alimento.Precio" />
+                </div>
+                <div class="col">
+                    <label for="precioventa">Precio de Venta: </label>
+                    <InputNumber id="precioventa" class="form-control" @bind-Value="alimento.PrecioVenta" />
+                    <ValidationMessage For="() => alimento.PrecioVenta" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <label for="fechaVencimiento">Fecha de Vencimiento: </label>
+                    <InputDate id="fechaVencimiento" class="form-control" @bind-Value="alimento.FechaVencimiento" />
+                    <ValidationMessage For="() => alimento.FechaVencimiento" />
+                </div>
+                <div class="col">
+                    <label for="unidadMedida">Unidad de Medida: </label>
+                    <InputSelect id="unidadMedida" class="form-select" @bind-Value="alimento.UnidadMedida">
+                        <option value="">Seleccione Unidad de Medida ...</option>
+                        <option value="Libras">Libras</option>
+                        <option value="Kilos">Kilos</option>
+                        <option value="Litros">Litros</option>
+                    </InputSelect>
+                    <ValidationMessage For="() => alimento.UnidadMedida" />
+                </div>
+            </div>
+            <div class="row mt-3 text-center">
+                <div class="col">
+					<label for="tipoProducto">Tipo de Producto: </label>
+					<InputText id="tipoProducto" class="form-control" @bind-Value="tipoSeleccionado" disabled />
+					<ValidationMessage For="() => alimento.Tipo" />
+				</div>
+				<div class="col">
+
+                    <button class="btn btn-secondary" type="submit">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}
+
+<!-- FORMULARIO LIBRO -->
+@if (tipoSeleccionado == "Libro")
+{
+	libro.Tipo = tipoSeleccionado;
+    <EditForm Model="@libro" OnValidSubmit="@GuardarLibro">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="container">
+            <div class="row mt-3">
+                <div class="col col-2">
+                    <label for="id" class="form-label">Código: </label>
+                    <InputText id="identifier" class="form-control" @bind-Value="libro.Id" />
+                    <ValidationMessage For="() => libro.Id" />
+                </div>
+                <div class="col col-4">
+                    <label for="nombre" class="form-label">Nombre: </label>
+                    <InputText id="nombre" class="form-control" @bind-Value="libro.Nombre" />
+                    <ValidationMessage For="() => libro.Nombre" />
+                </div>
+                <div class="col col-6">
+                    <label for="descripcion">Descripción: </label>
+                    <InputTextArea id="descripcion" class="form-control" @bind-Value="libro.Descripcion" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <label for="precio">Precio de Compra: </label>
+                    <InputNumber id="precio" class="form-control" @bind-Value="libro.Precio" />
+                    <ValidationMessage For="() => libro.Precio" />
+                </div>
+                <div class="col">
+                    <label for="precioventa">Precio de Venta: </label>
+                    <InputNumber id="precioventa" class="form-control" @bind-Value="libro.PrecioVenta" />
+                    <ValidationMessage For="() => libro.PrecioVenta" />
+                </div>
+            </div>
+            <div class="row mt-3">
+           
+                <div class="col col-4">
+                    <label for="Autor">Autor: </label>
+                    <InputText id="Autor" class="form-control" @bind-Value="libro.Autor" />
+                    <ValidationMessage For="() => libro.Autor" />
+                </div>
+                <div class="col col-4 ">
+                    <label for="Editorial">Editorial: </label>
+                    <InputText id="Editorial" class="form-control" @bind-Value="libro.Editorial"/>
+                    <ValidationMessage For="() => libro.Editorial" />
+                </div>
+                <div class="col col-4 ">
+                    <label for="Çategoria">Categoria: </label>
+                    <InputText id="Editorial" class="form-control" @bind-Value="libro.Categoria" />
+                    <ValidationMessage For="() => libro.Categoria" />
+                </div>
+            </div>
+            <div class="row mt-3 text-center">
+                <label for="tipoProducto">Tipo de Producto: </label>
+                <InputText id="tipoProducto" class="form-control" @bind-Value="tipoSeleccionado" disabled />
+                <ValidationMessage For="() => libro.Tipo" />
+            </div>
+            <div class="col">
+                <div class="col">
+                    <button class="btn btn-secondary" type="submit">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}
+
+<!-- FORMULARIO ELECTRÓNICO -->
+@if (tipoSeleccionado == "Electronico")
+{
+	electronico.Tipo = tipoSeleccionado;
+    <EditForm Model="@electronico" OnValidSubmit="@GuardarElectronico">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="container">
+            <div class="row mt-3">
+                <div class="col col-2">
+                    <label for="id" class="form-label">Código: </label>
+                    <InputText id="identifier" class="form-control" @bind-Value="electronico.Id" />
+                    <ValidationMessage For="() => libro.Id" />
+                </div>
+                <div class="col col-4">
+                    <label for="nombre" class="form-label">Nombre: </label>
+                    <InputText id="nombre" class="form-control" @bind-Value="electronico.Nombre" />
+                    <ValidationMessage For="() => libro.Nombre" />
+                </div>
+                <div class="col col-6">
+                    <label for="descripcion">Descripción: </label>
+                    <InputTextArea id="descripcion" class="form-control" @bind-Value="electronico.Descripcion" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <label for="precio">Precio de Compra: </label>
+                    <InputNumber id="precio" class="form-control" @bind-Value="electronico.Precio" />
+                    <ValidationMessage For="() => libro.Precio" />
+                </div>
+                <div class="col">
+                    <label for="precioventa">Precio de Venta: </label>
+                    <InputNumber id="precioventa" class="form-control" @bind-Value="electronico.PrecioVenta" />
+                    <ValidationMessage For="() => libro.PrecioVenta" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <label for="Garantia en dias">Garantia en dias: </label>
+                    <InputNumber id="Garantia en dias" class="form-control" @bind-Value="electronico.Garantia" />
+                    <ValidationMessage For="() => electronico.Garantia" />
+                </div>
+                <div class="col">
+                    <label for="Voltaje">Voltaje: </label>
+                    <InputNumber id="Voltaje" class="form-select" @bind-Value="electronico.Voltaje" />
+                    <ValidationMessage For="() => electronico.Voltaje" />
+                </div>
+            </div>
+            <div class="row mt-3 text-center">
+                <label for="tipoProducto">Tipo de Producto: </label>
+                <InputText id="tipoProducto" class="form-control" @bind-Value="tipoSeleccionado" disabled />
+                <ValidationMessage For="() => electronico.Tipo" />
+            </div>
+            <div class="col">
+                <div class="col">
+                    <button class="btn btn-secondary" type="submit">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}
+
+<!-- COMPONENTES DE LISTADO -->
+<Lab12YG.Componentes.ListadoProductos />
+
+
+@code {
+    private string tipoSeleccionado = "Alimento";
+
+    private Alimento alimento = new();
+    private List<Alimento> alimentos = new();
+
+    private Libro libro = new();
+    private List<Libro> libros = new();
+
+    private Electronico electronico = new();
+    private List<Electronico> electronicos = new();
+
+	private List<Producto> productos = new();
+	private List<Producto> productosGuardados = new();
+
+    private Producto ConvertirAProductoBase(Producto productoEspecifico)
+    {
+        return new Producto
+            {
+                Id = productoEspecifico.Id,
+                Nombre = productoEspecifico.Nombre,
+                Tipo = productoEspecifico.Tipo,
+                Descripcion = productoEspecifico.Descripcion,
+                Precio = productoEspecifico.Precio,
+                PrecioVenta = productoEspecifico.PrecioVenta
+            };
+    }
+
+    private void GuardarAlimento()
+    {
+        alimentos.Add(alimento);
+
+        var productoBase = ConvertirAProductoBase(alimento);
+        productos.Add(productoBase);
+
+        localStorage.SetItem("archivo_alimentos", alimentos);
+        localStorage.SetItem("archivo_productos", productos);
+
+        NavigationManager.NavigateTo("/listado-alimentos");
+    }
+
+    private void GuardarLibro()
+    {
+        libros.Add(libro);
+
+        var productoBase = ConvertirAProductoBase(libro);
+        productos.Add(productoBase);
+
+        localStorage.SetItem("archivo_libros", libros);
+        localStorage.SetItem("archivo_productos", productos);
+
+        NavigationManager.NavigateTo("/listado-libros");
+    }
+
+    private void GuardarElectronico()
+    {
+        electronicos.Add(electronico);
+
+        var productoBase = ConvertirAProductoBase(electronico);
+        productos.Add(productoBase);
+
+        localStorage.SetItem("archivo_electronicos", electronicos);
+        localStorage.SetItem("archivo_productos", productos);
+
+        NavigationManager.NavigateTo("/listado-electronicos");
+    }
+
+    
+    
+    protected override void OnInitialized()
+    {
+        alimentos = localStorage.GetItem<List<Alimento>>("archivo_alimentos") ?? new();
+        libros = localStorage.GetItem<List<Libro>>("archivo_libros") ?? new();
+        electronicos = localStorage.GetItem<List<Electronico>>("archivo_electronicos") ?? new();
+        productos = localStorage.GetItem<List<Producto>>("archivo_productos") ?? new();
+    }
+}

@@ -1,0 +1,57 @@
+﻿@using Lab12YG.Models
+@inject HttpClient Http;
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+
+
+@if (alimentos == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+				<th>Descripción</th>
+				<th>Precio</th>
+				<th>Precio Venta</th>
+                
+                <th>Precio Compra</th>
+                <th>Fecha Vencimiento</th>
+                <th>Unidad de Medida</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var alimento in alimentos)
+            {
+                <tr>
+                    <td>@alimento.Id</td>
+                    <td>@alimento.Nombre</td>
+                    <td>@alimento.Descripcion</td>
+                    <td>@alimento.Precio</td>
+					<td>@alimento.PrecioVenta</td>
+					<td>@alimento.Precio</td>
+                    <td>@alimento.FechaVencimiento.ToShortDateString()</td>
+                    <td>@alimento.UnidadMedida</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<Alimento> alimentos = new List<Alimento>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var alimentosGuardados = localStorage.GetItem<List<Alimento>>("archivo_alimentos");
+
+        if (alimentosGuardados != null)
+        {
+            alimentos = alimentosGuardados;
+        }
+    }
+}

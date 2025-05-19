@@ -1,0 +1,60 @@
+﻿@using Lab12YG.Models
+@inject HttpClient Http;
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+
+
+@if (electronicos == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio Compra</th>
+                <th>Precio Venta</th>
+               
+			
+                <th>Garantia</th>
+                <th>Voltaje</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var electronico in electronicos)
+            {
+                <tr>
+                    <td>@electronico.Id</td>
+                    <td>@electronico.Nombre</td>
+                    <td>@electronico.Descripcion</td>
+                    <td>@electronico.Precio</td>
+                    <td>@electronico.PrecioVenta</td>
+			
+					<td>@electronico.Garantia</td>
+					<td>@electronico.Voltaje</td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<Electronico> electronicos = new List<Electronico>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var electronicoGuardados = localStorage.GetItem<List<Electronico>>("archivo_electronicos");
+
+        if (electronicoGuardados != null)
+        {
+            electronicos = electronicoGuardados;
+        }
+    }
+}

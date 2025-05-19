@@ -1,0 +1,62 @@
+﻿@using Lab12YG.Models
+@inject HttpClient Http;
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+
+
+@if (libros == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Autor</th>
+                <th>Editorial</th>
+                <th>Categoria</th>
+                <th>Precio Compra</th>
+				<th>Precio Venta</th>
+				
+				
+				
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var libro in libros)
+            {
+                <tr>
+                    <td>@libro.Id</td>
+                    <td>@libro.Nombre</td>
+                    <td>@libro.Descripcion</td>
+					<td>@libro.Autor</td>
+					<td>@libro.Editorial</td>
+                    <td>@libro.Categoria</td>
+                    <td>@libro.Precio</td>
+                    <td>@libro.PrecioVenta</td>
+					
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<Libro> libros = new List<Libro>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var librosGuardados = localStorage.GetItem<List<Libro>>("archivo_libros");
+
+        if (librosGuardados != null)
+        {
+            libros = librosGuardados;
+        }
+    }
+}
